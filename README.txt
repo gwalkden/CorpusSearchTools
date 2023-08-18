@@ -1,4 +1,4 @@
-This repository contains two Python scripts for use with the output of CorpusSearch 2 (https://corpussearch.sourceforge.net/).
+This repository contains four Python scripts for use with CorpusSearch 2 (https://corpussearch.sourceforge.net/).
 
 I'm a researcher, not a programmer; these scripts are poorly commented (where they commented at all), may not work as intended on your device, and I can't commit to providing support for them.
 
@@ -9,6 +9,28 @@ out2csv2.py takes a CorpusSearch 2 .out file and produces a comma-delimited CSV 
 python out2csv2.py <output_file.out>
 
 This should work with any CorpusSearch-compatible corpus.
+
+***
+
+tokenno.py takes a .psd file and looks for IDs of the format
+
+foo.TokenNumber.bar
+
+It will output a copy of the .psd file in which all these IDs are numbered in ascending order by token: the first one will be foo.1.bar, the second foo.2.bar, etc. Usage is:
+
+python tokenno.py <file.psd>
+
+***
+
+wordcount.py counts the number of words (in the original corpus text!) in a .psd file. It does so by counting anything that looks like a terminal node, then counting more specific things. Usage is:
+
+python wordcount.py <file.psd>
+
+Output looks like this:
+
+"Done. Found 917 terminals, of which 4 were CODE, 41 were token IDs, 112 were punctuation, and 88 were null, leaving 672 words. We also found 27 lemmatized words."
+
+The numbers for CODE and ID are the numbers of terminals with the tags CODE and ID, respectively. The numbers for punctuation are the numbers of terminals with a one-character tag that isn't whitespace (\s) or a word character (\w). The numbers for null elements are the numbers of terminals that either a) begin with an asterisk * or b) are 0, regardless of tag. The "leaving X words" is derived by removing everything from the list of terminals that isn't in the lists of CODE, ID, punctuation, or null elements, and taking the length of that list. The number of "lemmatized words" is the number of terminals containing a hyphen (yes, this is pretty stupid).
 
 ***
 
